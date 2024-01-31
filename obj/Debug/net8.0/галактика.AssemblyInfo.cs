@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("галактика")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fcd04a1f32ed2caab9e8995d735fc74af4740c02")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c6b8c966ff8aeed678c50da9bfa9eb104dc31c87")]
 [assembly: System.Reflection.AssemblyProductAttribute("галактика")]
 [assembly: System.Reflection.AssemblyTitleAttribute("галактика")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
