@@ -4,11 +4,16 @@ using System.Threading;
 
 class Logic
 {
+    static int speed = 3; // prędkość poruszania się statku
+    static Random rand = new Random();
     public static void HandleInput(ref int playerPosition, List<int[]> bulletPositions)
     {
+ 
         if (Console.KeyAvailable)
         {
+
             ConsoleKeyInfo key = Console.ReadKey(true);
+
             switch (key.Key)
             {
                 case ConsoleKey.LeftArrow:
@@ -24,7 +29,7 @@ class Logic
         }
     }
 
-    public static void UpdateGame(ref List<int[]> bulletPositions)
+    public static void UpdateGame(ref List<int[]> bulletPositions, ref List<int[]> enemyPositions)
     {
         for (int i = bulletPositions.Count - 1; i >= 0; i--)
         {
@@ -35,13 +40,32 @@ class Logic
                 bulletPositions.RemoveAt(i); // oszczędzanie pamięci
             }
         }
-        // dodać aktualizację pozycje przeciwników
+
+        // aktualizacja pozycji przeciwników
+        for (int i = enemyPositions.Count - 1; i >= 0; i--)
+        {
+            enemyPositions[i][1]++;
+            if (enemyPositions[i][1] >= Console.WindowHeight)
+            {
+                enemyPositions.RemoveAt(i);
+            }
+        }
+
+        // generowanie nowych przeciwników
+        if (rand.Next(100) < 10) // 10% szans na generowanie nowego przeciwnika w każdej klatce
+        {
+            char[] enemyTypes = { '&', '%', '#' };
+            int x = rand.Next(Console.WindowWidth);
+            int y = 0; // zawsze na górze ekranu
+            char type = enemyTypes[rand.Next(enemyTypes.Length)];
+            enemyPositions.Add(new int[] { x, y, type });
+        }
     }
 }
 
 class Render
 {
-    public static void RenderGame(int playerPosition, int oldPlayerPosition, List<int[]> bulletPositions, List<int[]> oldBulletPositions)
+    public static void RenderGame(int playerPosition, int oldPlayerPosition, List<int[]> bulletPositions, List<int[]> oldBulletPositions, List<int[]> enemyPositions, List<int[]> oldEnemyPositions)
     {
         if (playerPosition != oldPlayerPosition)
         {
@@ -69,7 +93,24 @@ class Render
                 Console.SetCursorPosition(bulletPos[0], bulletPos[1]);
                 Console.Write("^");
             }
-        }   // dodać aktualizację pozycje przeciwników    }
+        }
+
+        // czyszczenie starych przeciwników
+        foreach (var enemy in enemyPositions)
+        {
+            Console.SetCursorPosition(enemy[0], enemy[1]);
+            Console.Write((char)enemy[2]); // Konwersja typu przeciwnika na znak
+        }
+
+        // rysowanie nowych przeciwników
+        foreach (var oldEnemy in oldEnemyPositions)
+        {
+            if (oldEnemy[1] >= 0 && oldEnemy[1] < Console.WindowHeight)
+            {
+                Console.SetCursorPosition(oldEnemy[0], oldEnemy[1]);
+                Console.Write(" ");
+            }
+        }
     }
 }
 
@@ -79,6 +120,8 @@ class Game
     static int playerPosition = Console.WindowWidth / 2;
     static List<int[]> bulletPositions = new List<int[]>();
     static List<int[]> oldBulletPositions = new List<int[]>();
+    static List<int[]> enemyPositions = new List<int[]>();
+    static List<int[]> oldEnemyPositions = new List<int[]>();
 
     static void Main()
     {
@@ -89,10 +132,12 @@ class Game
         {
             int oldPlayerPosition = playerPosition;
             oldBulletPositions = bulletPositions.ConvertAll(bullet => new int[] { bullet[0], bullet[1] });
+            oldEnemyPositions = enemyPositions.ConvertAll(enemy => new int[] { enemy[0], enemy[1] });
+
 
             Logic.HandleInput(ref playerPosition, bulletPositions);
-            Logic.UpdateGame(ref bulletPositions);
-            Render.RenderGame(playerPosition, oldPlayerPosition, bulletPositions, oldBulletPositions);
+            Logic.UpdateGame(ref bulletPositions, ref enemyPositions);
+            Render.RenderGame(playerPosition, oldPlayerPosition, bulletPositions, oldBulletPositions, enemyPositions, oldEnemyPositions);
 
             oldBulletPositions = bulletPositions;
 
@@ -100,3 +145,5 @@ class Game
         }
     }
 }
+
+//
