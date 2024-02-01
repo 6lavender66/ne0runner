@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using static System.Formats.Asn1.AsnWriter;
 
 class Logic
 {
@@ -35,11 +36,11 @@ class Logic
     {
         for (int i = bulletPositions.Count - 1; i >= 0; i--)
         {
-            bulletPositions[i][1]--; // wprowadzić stałą szybkość dla pocisków
+            bulletPositions[i][1]--; 
 
             if (bulletPositions[i][1] < 0)
             {
-                bulletPositions.RemoveAt(i); // oszczędzanie pamięci
+                bulletPositions.RemoveAt(i);
             }
         }
 
@@ -78,13 +79,19 @@ class Logic
             }
         }
 
-        // sprawdzanie kolizji przeciwników z graczem
-        foreach (var enemy in enemyPositions)
+        for (int i = enemyPositions.Count - 1; i >= 0; i--)
         {
-            if (enemy[1] == Console.WindowHeight - 1 && enemy[0] == playerPosition)
+            int[] enemy = enemyPositions[i];
+            if (enemy[1] == Console.WindowHeight - 2 && enemy[0] == playerPosition)
             {
-                isGameRunning = false; // zakończenie gry
-                return;
+                Game.playerHP -= 25; // Odejmowanie HP
+                enemyPositions.RemoveAt(i); // Bezpieczne usuwanie przeciwnika po kolizji
+
+                if (Game.playerHP <= 0)
+                {
+                    isGameRunning = false; // Zakończenie gry, jeśli HP spadnie do 0 lub poniżej
+                    return;
+                }
             }
         }
     }
@@ -140,7 +147,7 @@ class Render
         }
 
         Console.SetCursorPosition(0, Console.WindowHeight - 1);
-        Console.Write($"Score: {Logic.score}");
+        Console.Write($"Zestrzelenia: {Logic.score}   Pilot: {Game.playerName}   Pochodzenie: {Game.playerOrigin}   HP: {Game.playerHP}");
 
     }
 }
@@ -154,9 +161,32 @@ class Game
     static List<int[]> enemyPositions = new List<int[]>();
     static List<int[]> oldEnemyPositions = new List<int[]>();
 
+    public static int playerHP = 100;
+    public static string playerName = "";
+    public static string playerOrigin = "";
+
+    static void Menu()
+    {
+        Console.WriteLine("Witam Pana Profesora w grze!");
+        Console.WriteLine("\nFabuła:");
+        Console.WriteLine("Jesteś ostatnią nadzieją ludzkości na zdane przezemnie tego przedmiotu.\n");
+
+        // Zbieranie danych od użytkownika
+        Console.Write("Podaj imię pilota: ");
+        playerName = Console.ReadLine();
+
+        Console.Write("Skąd pochodzi?: ");
+        playerOrigin = Console.ReadLine();
+
+        Console.Clear(); // Czyści ekran przed rozpoczęciem gry
+    }
+
     static void Main()
     {
         Console.CursorVisible = false;
+
+        Menu();
+
         playerPosition = Console.WindowWidth / 2;
 
         while (isGameRunning)
@@ -175,11 +205,11 @@ class Game
             Thread.Sleep(20);
         }
 
-        // wyświetlenie komunikatu końcowego
         Console.Clear();
-        Console.WriteLine("Game Over");
-        Console.WriteLine($"Final Score: {Logic.score}");
+        Console.WriteLine("Nie żyjesz D:");
+        Console.WriteLine($"Wynik: {(Logic.score * 10)/2}");
         Console.ReadKey();
+
     }
 }
 
