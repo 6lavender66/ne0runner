@@ -16,3 +16,7 @@ Program napisany w C#, cel gry to uzyskać jak najwięcej zestrzeleń
 ## Problemy
 
 Największy problem przy teoretycznym rozwijaniu programu może stanowić rozmiar i zachowanie obiektów. Trudno w terminalu zakodować obiekt który składa się ze znaków, tak żeby zachowywał sie jak jeden wspolny obiekt.
+
+## Dlaczego nazwa w cyrlicy?
+
+Nie wiem, taka wizja artystyczna. 
