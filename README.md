@@ -4,7 +4,7 @@ autor: Bartosz Szczepaniok
 
 ## Opis
 
-Program napisany w C#, cel gry to uzyskać jak najwięcej zestrzeleń przed nieuniknionym końcem
+Program napisany w C#, cel gry to uzyskać jak najwięcej zestrzeleń 
 
 ## Funkcje
 
@@ -16,4 +16,4 @@ Program napisany w C#, cel gry to uzyskać jak najwięcej zestrzeleń przed nieu
 
 ## Problemy
 
-Największy problem przy teoretycznym rozwijaniu programu może stanowić rozmiar i zachowanie obiketów. Trudno w terminalu ustawić rzeczy jak hitboxy, wprowadzić kształty.
+Największy problem przy teoretycznym rozwijaniu programu może stanowić rozmiar i zachowanie obiektów. Trudno w terminalu zakodować obiekt który składa się ze znaków, tak żeby zachowywał sie jak jeden wspolny obiekt.
