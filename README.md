@@ -9,10 +9,9 @@ Program napisany w C#, cel gry to uzyskać jak najwięcej zestrzeleń
 ## Funkcje
 
 - Kontrola całej gry za pomocą 3 klawiszy.
-- Strzelanie do przeciwników za pomocą klawisza strzałki.
-- System punktów za zestrzelenie wrogów.
+- System punktów za zestrzelenie.
 - System HP, gdzie gracz zaczyna z 100 punktami zdrowia, a każde trafienie redukuje punkty HP.
-- Personalizacja rozgrywki poprzez wprowadzenie imienia pilota i kraju pochodzenia na początku gry.
+- Lekka personalizacja rozgrywki poprzez wybrania imienia pilota i kraju pochodzenia na początku gry.
 
 ## Problemy
 
